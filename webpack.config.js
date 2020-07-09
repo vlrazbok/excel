@@ -15,7 +15,6 @@ const jsLoaders = () => {
       options: {
         presets: ['@babel/preset-env'],
       },
-
     },
   ]
   if (isDev) {
@@ -49,8 +48,8 @@ module.exports = {
     new HTMLWebpackPlugin({
       template: 'index.html', // Звідки ми будемо брати шаблон для html,
       minify: {
-        removeComments: isProd,
-        collapseWhitespace: isProd,
+        removeComments: isProd, // Видаляє коментарі
+        collapseWhitespace: isProd, // Видаляє відступи
       },
     }),
     new CopyPlugin({
@@ -68,12 +67,14 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.s[ac]ss$/i,
+        test: /\.s[ac]ss$/i, // Розширення файлу
         use: [
           // Creates `style` nodes from JS strings В даному випадку не потрібний
           // 'style-loader',
           {
             loader: MiniCssExtractPlugin.loader,
+            // Необхідно використовувати MiniCssExtractPlugin
+            // тому що вебпак розуміє тільки js code
             options: {
               hmr: isDev,
               reloadAll: true,
@@ -86,9 +87,10 @@ module.exports = {
         ],
       },
       {
-        test: /\.js$/,
-        exclude: /node_modules/,
+        test: /\.js$/, // Розширення файлу
+        exclude: /node_modules/, // Те, що не повинно оброблятися
         use: jsLoaders(),
+        // use - Завантажувач,або група завантажувачів у випадку з scss
       },
     ],
   },
